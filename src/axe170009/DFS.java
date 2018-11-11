@@ -21,7 +21,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
 	enum Color { BLACK, WHITE, GRAY; }
 	
     List < Vertex > finishList;
-    //List< List < Vertex > > scc;
+    List< List < Vertex > > scc;
     static boolean notDAG;
     int componentCount;
     
@@ -51,7 +51,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
     
     public void dfs() {
     	finishList = new LinkedList < Vertex > ();
-    	//scc = new ArrayList< List< Vertex > >();
+    	scc = new ArrayList< List< Vertex > >();
     	componentCount = 0;
     	
         for (Vertex v: g) {
@@ -61,9 +61,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
         for (Vertex u: g) {
             if (get(u).col == Color.WHITE) {
             	componentCount++;
-            	/*if(componentCount > scc.size()) {
-            		scc.add(new LinkedList<Vertex>());
-            	}*/
+            	scc.add(new LinkedList<Vertex>());
             	DFS_Visit(u);
             }
         }
@@ -71,7 +69,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
     
     private void dfs(List<Vertex> list) {
     	finishList = new LinkedList < Vertex > ();
-    	//scc = new ArrayList< List< Vertex > >();
+    	scc = new ArrayList< List< Vertex > >();
     	componentCount = 0;
     	
     	Iterator<Vertex> listIt = list.iterator();
@@ -82,9 +80,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
     	for(Vertex u : list) {
     		if (get(u).col == Color.WHITE) {
             	componentCount++;
-            	/*if(componentCount > scc.size()) {
-            		scc.add(new LinkedList<Vertex>());
-            	}*/
+            	scc.add(new LinkedList<Vertex>());
                 DFS_Visit(u);
             }
     	}
@@ -105,7 +101,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
         }
         get(u).col = Color.BLACK;
         finishList.add(0, u);
-        //scc.get(componentCount).add(0, u);
+        scc.get(componentCount-1).add(0, u);
     }
 
     // Member function to find topological order
@@ -145,8 +141,7 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
     	DFS graphDFS = new DFS(g); 
 		graphDFS.dfs();
 		/*concurrent modification exception will be thrown if finishTimeList = graphDFS.finishList
-		is directly used 
-		*/
+		is directly used.*/
 		List<Vertex> finishTimeList = new LinkedList<Vertex>();
 		for(Vertex u : graphDFS.finishList) {
 			finishTimeList.add(u);
@@ -174,6 +169,6 @@ public class DFS extends GraphAlgorithm < DFS.DFSVertex > {
         
         System.out.println("Strongly connected components: ");
         System.out.println(stronglyConnectedComponents(g).componentCount);
-        //System.out.println(stronglyConnectedComponents(g).scc);
+        System.out.println(stronglyConnectedComponents(g).scc);
     }
 }
